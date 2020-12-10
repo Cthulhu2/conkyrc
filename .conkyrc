@@ -1,0 +1,103 @@
+conky.config = {
+  background = false,
+  font = 'Liberation Mono:size=9',
+  --xft_font = 'Liberation Mono:size=10',
+  use_xft = true,
+  xftalpha = 0.9,
+  update_interval = 1.0,
+  total_run_times = 0,
+  own_window = true,
+  own_window_type = 'panel',
+  own_window_transparent = true,
+  --own_window_hints = 'undecorated,above,sticky,skip_taskbar,skip_pager',
+  --own_window_hints = 'undecorated,above,skip_taskbar,skip_pager',
+  --own_window_argb_visual = true,
+  --own_window_argb_value = 192,
+  double_buffer = true,
+  minimum_width = 225,
+  minimum_height = 500,
+  maximum_width = 225,
+  draw_shades = false,
+  draw_outline = false,
+  draw_borders = false,
+  draw_graph_borders = true,
+
+  alignment = 'top_left',
+  gap_x = -230,
+  gap_y = 0,
+  no_buffers = true,
+  cpu_avg_samples = 2,
+  override_utf8_locale = false,
+  uppercase = false,
+
+  lua_load = '.conky/conky-draw/conky_draw.lua',
+  lua_draw_hook_pre = 'main',
+
+  default_color = '555555',
+  --default_shade_color = 'black',
+  color1 = '222', -- graph borders color
+  color4 = 'DDDDDD', -- value color
+  color5 = 'AAAAAA' -- title color,
+}
+
+conky.text = [[
+
+${font Liberation Mono:weight=bold:size=9}${color5}SYSTEM ${hr 1}${color}${font}
+
+${font Liberation Mono:weight=bold:size=9}Hostname:${font} ${alignr}${color4}${nodename}${color}
+${font Liberation Mono:weight=bold:size=9}Kernel:${font} ${alignr}${color4}${kernel}${color}
+${font Liberation Mono:weight=bold:size=9}Uptime:${font} ${alignr}${color4}${uptime}${color}
+${font Liberation Mono:weight=bold:size=9}Temp:${font} ${alignr}${color4}${acpitemp}C${color}
+
+${font Liberation Mono:weight=bold:size=9}CPU:${font} ${alignr}${color4}${freq} MHz${color}
+${font Liberation Mono:weight=bold:size=9}Processes:${font} ${alignr}${color4}${processes} (${running_processes} running)${color}
+${font Liberation Mono:weight=bold:size=9}Load:${font} ${alignr}${color4}${loadavg}${color}
+
+${font Liberation Mono:weight=bold:size=9}CPU1${font} ${alignr}${color4}${cpu cpu1}%${color}
+${voffset -5}${color1}${cpugraph cpu1 20,0 008800 008800}${color}
+${font Liberation Mono:weight=bold:size=9}CPU2${font} ${alignr}${color4}${cpu cpu2}%${color}
+${voffset -5}$color1${cpugraph cpu2 20,0 008800 008800}${color}
+${font Liberation Mono:weight=bold:size=9}CPU3${font} ${alignr}${color4}${cpu cpu3}%${color}
+${voffset -5}${color1}${cpugraph cpu3 20,0 008800 008800}${color}
+${font Liberation Mono:weight=bold:size=9}CPU4${font} ${alignr}${color4}${cpu cpu4}%${color}
+${voffset -5}${color1}${cpugraph cpu4 20,0 008800 008800}${color}
+
+${font Liberation Mono:weight=bold:size=9}RAM${font} ${alignr}${color4}${mem} / ${memmax} (${memperc}%)${color}
+#${membar 4} #see conky-draw/conky_draw_config.lua
+
+
+${font Liberation Mono:weight=bold:size=9}SWAP${font} ${alignr}${color4}${swap} / ${swapmax} (${swapperc}%)${color}
+#${swapbar 4} #see conky-draw/conky_draw_config.lua
+
+
+${font Liberation Mono:weight=bold:size=9}Highest CPU ${alignr} CPU%  Mem%${font}
+${voffset -9}${hr 1}
+${color4}${top name 1}${alignr}${top cpu 1}${top mem 1}
+${top name 2}${alignr}${top cpu 2}${top mem 2}
+${top name 3}${alignr}${top cpu 3}${top mem 3}${color}
+
+${font Liberation Mono:weight=bold:size=9}Highest Mem ${alignr} CPU%  Mem%${font}
+${voffset -9}${hr 1}
+${color4}${top_mem name 1}${alignr}${top_mem cpu 1}${top_mem mem 1}
+${top_mem name 2}$alignr${top_mem cpu 2}${top_mem mem 2}
+${top_mem name 3}$alignr${top_mem cpu 3}${top_mem mem 3}${color}
+
+
+${font Liberation Mono:weight=bold:size=9}${color5}FILESYSTEM ${hr 1}${color}${font}
+
+${font Liberation Mono:weight=bold:size=9}Root:${font} ${color4}${alignr}${fs_free /} / ${fs_size /}${color}
+#{fs_bar 4 /} #see conky-draw/conky_draw_config.lua
+
+
+
+${font Liberation Mono:weight=bold:size=9}${color5}NETWORK ${hr 1}${color}${font}
+
+${font Liberation Mono:weight=bold:size=9}Down ${alignr 95}Up${font}
+${color4}${voffset -13}${alignr 120}${downspeed enp7s0} k/s
+${voffset -13}${alignr}${upspeed enp7s0} k/s${color}
+${voffset -5}${color1}${downspeedgraph enp7s0 25,107 005500 005500} ${alignr}${upspeedgraph enp7s0 25,107 550000 550000}${color}
+${font Liberation Mono:weight=bold:size=9}${voffset -5}Total ${alignr 74}Total${font}
+${voffset -13}${color4}${alignr 120}${totaldown enp7s0}
+${voffset -13}${alignr}${totalup enp7s0}$color
+
+]]
