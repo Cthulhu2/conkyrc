@@ -7,8 +7,8 @@ elements = {
   {
     kind = 'bar_graph',
     conky_value = 'memperc',
-    from = {x = 10, y = 385},
-    to = {x = 225, y = 385},
+    from = {x = 10, y = 315},
+    to = {x = 225, y = 315},
 
     border = true,
 
@@ -31,8 +31,8 @@ elements = {
   {
     kind = 'bar_graph',
     conky_value = 'swapperc',
-    from = {x = 10, y = 425},
-    to = {x = 225, y = 425},
+    from = {x = 10, y = 355},
+    to = {x = 225, y = 355},
 
     border = true,
 
@@ -55,8 +55,8 @@ elements = {
   {
     kind = 'bar_graph',
     conky_value = 'fs_used_perc /',
-    from = {x = 10, y = 660},
-    to = {x = 225, y = 660},
+    from = {x = 10, y = 590},
+    to = {x = 225, y = 590},
 
     border = true,
 

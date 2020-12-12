@@ -1,9 +1,8 @@
 conky.config = {
   background = false,
   font = 'Liberation Mono:size=9',
-  --xft_font = 'Liberation Mono:size=10',
   use_xft = true,
-  xftalpha = 0.9,
+  --xftalpha = 0.9,
   update_interval = 1.0,
   total_run_times = 0,
   own_window = true,
@@ -21,13 +20,14 @@ conky.config = {
   draw_outline = false,
   draw_borders = false,
   draw_graph_borders = true,
+  show_graph_scale = true,
 
   alignment = 'top_left',
   gap_x = -230,
   gap_y = 0,
   no_buffers = true,
   cpu_avg_samples = 2,
-  override_utf8_locale = false,
+  override_utf8_locale = true,
   uppercase = false,
 
   lua_load = '.conky/conky-draw/conky_draw.lua',
@@ -45,39 +45,44 @@ conky.text = [[
 ${font Liberation Mono:weight=bold:size=9}${color5}SYSTEM ${hr 1}${color}${font}
 
 ${font Liberation Mono:weight=bold:size=9}Hostname:${font} ${alignr}${color4}${nodename}${color}
-${font Liberation Mono:weight=bold:size=9}Kernel:${font} ${alignr}${color4}${kernel}${color}
+${font Liberation Mono:weight=bold:size=9}Kernel:${font} ${alignr}${color4}${kernel} ${machine}${color}
 ${font Liberation Mono:weight=bold:size=9}Uptime:${font} ${alignr}${color4}${uptime}${color}
-${font Liberation Mono:weight=bold:size=9}Temp:${font} ${alignr}${color4}${acpitemp}C${color}
+${font Liberation Mono:weight=bold:size=9}Temp:${font} ${alignr}${color4}${acpitemp}°C${color}
 
-${font Liberation Mono:weight=bold:size=9}CPU:${font} ${alignr}${color4}${freq} MHz${color}
 ${font Liberation Mono:weight=bold:size=9}Processes:${font} ${alignr}${color4}${processes} (${running_processes} running)${color}
 ${font Liberation Mono:weight=bold:size=9}Load:${font} ${alignr}${color4}${loadavg}${color}
 
-${font Liberation Mono:weight=bold:size=9}CPU1${font} ${alignr}${color4}${cpu cpu1}%${color}
-${voffset -5}${color1}${cpugraph cpu1 20,0 008800 008800}${color}
-${font Liberation Mono:weight=bold:size=9}CPU2${font} ${alignr}${color4}${cpu cpu2}%${color}
-${voffset -5}$color1${cpugraph cpu2 20,0 008800 008800}${color}
-${font Liberation Mono:weight=bold:size=9}CPU3${font} ${alignr}${color4}${cpu cpu3}%${color}
-${voffset -5}${color1}${cpugraph cpu3 20,0 008800 008800}${color}
-${font Liberation Mono:weight=bold:size=9}CPU4${font} ${alignr}${color4}${cpu cpu4}%${color}
-${voffset -5}${color1}${cpugraph cpu4 20,0 008800 008800}${color}
+${font Liberation Mono:weight=bold:size=9}CPU:${font}${alignr}${color4}${freq} MHz${color}
 
-${font Liberation Mono:weight=bold:size=9}RAM${font} ${alignr}${color4}${mem} / ${memmax} (${memperc}%)${color}
+${voffset -8}${font Liberation Mono:weight=bold:size=9}01:${font}\
+${color4}${alignr 150}${cpu cpu1}%${alignr 142}${hwmon 0 temp 1}°C${color}
+${voffset -23}${alignr}${color1}${cpugraph cpu1 20,135 008800 008800}${color}
+${voffset -2}${font Liberation Mono:weight=bold:size=9}02:${font}\
+${color4}${alignr 150}${cpu cpu2}%${alignr 142}${hwmon 0 temp 2}°C${color}
+${voffset -23}${alignr}${color1}${cpugraph cpu2 20,135 008800 008800}${color}
+${voffset -2}${font Liberation Mono:weight=bold:size=9}03:${font}\
+${color4}${alignr 150}${cpu cpu3}%${alignr 142}${hwmon 0 temp 3}°C${color}
+${voffset -23}${alignr}${color1}${cpugraph cpu3 20,135 008800 008800}${color}
+${voffset -2}${font Liberation Mono:weight=bold:size=9}04:${font}\
+${color4}${alignr 150}${cpu cpu4}%${alignr 142}${hwmon 0 temp 4}°C${color}
+${voffset -23}${alignr}${color1}${cpugraph cpu4 20,135 008800 008800}${color}
+
+${font Liberation Mono:weight=bold:size=9}RAM:${font} ${alignr}${color4}${mem} / ${memmax} (${memperc}%)${color}
 #${membar 4} #see conky-draw/conky_draw_config.lua
 
 
-${font Liberation Mono:weight=bold:size=9}SWAP${font} ${alignr}${color4}${swap} / ${swapmax} (${swapperc}%)${color}
+${font Liberation Mono:weight=bold:size=9}SWAP:${font} ${alignr}${color4}${swap} / ${swapmax} (${swapperc}%)${color}
 #${swapbar 4} #see conky-draw/conky_draw_config.lua
 
 
 ${font Liberation Mono:weight=bold:size=9}Highest CPU ${alignr} CPU%  Mem%${font}
-${voffset -9}${hr 1}
+${voffset -9}
 ${color4}${top name 1}${alignr}${top cpu 1}${top mem 1}
 ${top name 2}${alignr}${top cpu 2}${top mem 2}
 ${top name 3}${alignr}${top cpu 3}${top mem 3}${color}
 
 ${font Liberation Mono:weight=bold:size=9}Highest Mem ${alignr} CPU%  Mem%${font}
-${voffset -9}${hr 1}
+${voffset -9}
 ${color4}${top_mem name 1}${alignr}${top_mem cpu 1}${top_mem mem 1}
 ${top_mem name 2}$alignr${top_mem cpu 2}${top_mem mem 2}
 ${top_mem name 3}$alignr${top_mem cpu 3}${top_mem mem 3}${color}
@@ -85,19 +90,35 @@ ${top_mem name 3}$alignr${top_mem cpu 3}${top_mem mem 3}${color}
 
 ${font Liberation Mono:weight=bold:size=9}${color5}FILESYSTEM ${hr 1}${color}${font}
 
-${font Liberation Mono:weight=bold:size=9}Root:${font} ${color4}${alignr}${fs_free /} / ${fs_size /}${color}
+${font Liberation Mono:weight=bold:size=9}/ ${font} ${color4}${alignr}${fs_used /} / ${fs_size /}${color}
 #{fs_bar 4 /} #see conky-draw/conky_draw_config.lua
 
 
+${font Liberation Mono:weight=bold:size=9}R ${alignr 108}W${font}
+\
+${voffset -13}${alignr 120}${color4}${diskio_read /dev/sdc}${color}
+${voffset -13}${alignr}${color4}${diskio_write /dev/sdc}${color}
+\
+${voffset -5}${color1}${font Liberation Mono:size=7}\
+${diskiograph_read /dev/sdc 25,107 005500 005500}${alignr}${diskiograph_write /dev/sdc 25,107 550000 550000}\
+${font}${color}
 
 ${font Liberation Mono:weight=bold:size=9}${color5}NETWORK ${hr 1}${color}${font}
 
+${font Liberation Mono:weight=bold:size=9}LAN IP:${font} ${alignr}${color4}${addr enp7s0}${color}
+\
 ${font Liberation Mono:weight=bold:size=9}Down ${alignr 95}Up${font}
-${color4}${voffset -13}${alignr 120}${downspeed enp7s0} k/s
-${voffset -13}${alignr}${upspeed enp7s0} k/s${color}
-${voffset -5}${color1}${downspeedgraph enp7s0 25,107 005500 005500} ${alignr}${upspeedgraph enp7s0 25,107 550000 550000}${color}
-${font Liberation Mono:weight=bold:size=9}${voffset -5}Total ${alignr 74}Total${font}
+\
+${color4}${voffset -13}${alignr 120}${downspeed enp7s0}
+${voffset -13}${alignr}${upspeed enp7s0}${color}
+\
+${voffset -5}${color1}${font Liberation Mono:size=7}\
+${downspeedgraph enp7s0 25,107 005500 005500} ${alignr}${upspeedgraph enp7s0 25,107 550000 550000}\
+${font}${color}
+\
+${font Liberation Mono:weight=bold:size=9}${voffset -5}Total ${alignr 73}Total${font}
 ${voffset -13}${color4}${alignr 120}${totaldown enp7s0}
-${voffset -13}${alignr}${totalup enp7s0}$color
+${voffset -13}${alignr}${totalup enp7s0}${color}
 
+${font Liberation Mono:style=Italic:size=8}${alignr}Conky v${conky_version}${font}
 ]]
