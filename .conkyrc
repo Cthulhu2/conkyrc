@@ -30,95 +30,108 @@ conky.config = {
   override_utf8_locale = true,
   uppercase = false,
 
-  lua_load = '.conky/conky-draw/conky_draw.lua',
+  lua_load = '~/.conky/conky-draw/conky_draw.lua',
   lua_draw_hook_pre = 'main',
 
   default_color = '555555',
   --default_shade_color = 'black',
   color1 = '222', -- graph borders color
   color4 = 'DDDDDD', -- value color
-  color5 = 'AAAAAA' -- title color,
+  color5 = 'AAAAAA', -- title color,
+
+-- TEMPLATES -------------------------------------------------------------------
+  -- Template0 (lbl, val)
+  -- *Label:* value 
+  template0 = [[${font Liberation Mono:weight=bold:size=9}\1${font} ${alignr}${font Liberation Mono:size=9}${color4}\2${color}${font}]],
+
+  -- Template1 (cpuN)
+  -- *CPUn:* xx% yy°C [cpugraph]
+  template1 = [[${font Liberation Mono:weight=bold:size=9}${if_match \1<10}0${endif}\1:${font}
+${voffset -14}${font Liberation Mono:size=9}${color4}${alignr 150}${cpu cpu\1}%${alignr 142}${hwmon 0 temp \1}°C${color}${font}
+${voffset -23}${alignr}${color1}${cpugraph cpu\1 20,135 008800 008800}${color}]],
+
+  -- Template2 (lbl1, lbl2)
+  -- |*Label1*   |*Label2*   |
+  template2 = [[${font Liberation Mono:weight=bold:size=9}\1 ${goto 123}\2${font}]],
+
+  -- Template3 (val1, val2)
+  -- |       val1|        val|
+  template3 = [[${font Liberation Mono:size=9}${color4}${alignr 120}\1
+${voffset -14}${alignr}\2${color}${font}]],
+
+  -- Template4 (title)
+  -- *Title* _______________
+  template4 = [[${font Liberation Mono:weight=bold:size=9}${color5}\1${font} ${hr 1}${color}]]
 }
 
 conky.text = [[
 
-${font Liberation Mono:weight=bold:size=9}${color5}SYSTEM ${hr 1}${color}${font}
+${template4 SYSTEM}
 
-${font Liberation Mono:weight=bold:size=9}Hostname:${font} ${alignr}${color4}${nodename}${color}
-${font Liberation Mono:weight=bold:size=9}Kernel:${font} ${alignr}${color4}${kernel} ${machine}${color}
-${font Liberation Mono:weight=bold:size=9}Uptime:${font} ${alignr}${color4}${uptime}${color}
-${font Liberation Mono:weight=bold:size=9}Temp:${font} ${alignr}${color4}${acpitemp}°C${color}
+${template0 Hostname: ${nodename}}
+${template0 Kernel: ${kernel}\ ${machine}}
+${template0 Uptime: ${uptime}}
+${template0 Temp: ${acpitemp}°C}
 
-${font Liberation Mono:weight=bold:size=9}Processes:${font} ${alignr}${color4}${processes} (${running_processes} running)${color}
-${font Liberation Mono:weight=bold:size=9}Load:${font} ${alignr}${color4}${loadavg}${color}
+${template0 Processes: ${processes}\ (${running_processes}\ running)}
+${template0 Load: ${loadavg}}
 
-${font Liberation Mono:weight=bold:size=9}CPU:${font}${alignr}${color4}${freq} MHz${color}
+${template0 CPU: ${freq}\ MHz}
 
-${voffset -8}${font Liberation Mono:weight=bold:size=9}01:${font}\
-${color4}${alignr 150}${cpu cpu1}%${alignr 142}${hwmon 0 temp 1}°C${color}
-${voffset -23}${alignr}${color1}${cpugraph cpu1 20,135 008800 008800}${color}
-${voffset -2}${font Liberation Mono:weight=bold:size=9}02:${font}\
-${color4}${alignr 150}${cpu cpu2}%${alignr 142}${hwmon 0 temp 2}°C${color}
-${voffset -23}${alignr}${color1}${cpugraph cpu2 20,135 008800 008800}${color}
-${voffset -2}${font Liberation Mono:weight=bold:size=9}03:${font}\
-${color4}${alignr 150}${cpu cpu3}%${alignr 142}${hwmon 0 temp 3}°C${color}
-${voffset -23}${alignr}${color1}${cpugraph cpu3 20,135 008800 008800}${color}
-${voffset -2}${font Liberation Mono:weight=bold:size=9}04:${font}\
-${color4}${alignr 150}${cpu cpu4}%${alignr 142}${hwmon 0 temp 4}°C${color}
-${voffset -23}${alignr}${color1}${cpugraph cpu4 20,135 008800 008800}${color}
+${voffset -2}${template1 1}
+${voffset -2}${template1 2}
+${voffset -2}${template1 3}
+${voffset -2}${template1 4}
 
-${font Liberation Mono:weight=bold:size=9}RAM:${font} ${alignr}${color4}${mem} / ${memmax} (${memperc}%)${color}
+${template0 RAM: ${mem}\ /\ ${memmax}\ (${memperc}%)}
 #${membar 4} #see conky-draw/conky_draw_config.lua
 
 
-${font Liberation Mono:weight=bold:size=9}SWAP:${font} ${alignr}${color4}${swap} / ${swapmax} (${swapperc}%)${color}
+${template0 SWAP: ${swap}\ /\ ${swapmax}\ (${swapperc}%)}
 #${swapbar 4} #see conky-draw/conky_draw_config.lua
 
 
 ${font Liberation Mono:weight=bold:size=9}Highest CPU ${alignr} CPU%  Mem%${font}
-${voffset -9}
-${color4}${top name 1}${alignr}${top cpu 1}${top mem 1}
+${voffset -9}${color4}
+${top name 1}${alignr}${top cpu 1}${top mem 1}
 ${top name 2}${alignr}${top cpu 2}${top mem 2}
-${top name 3}${alignr}${top cpu 3}${top mem 3}${color}
+${top name 3}${alignr}${top cpu 3}${top mem 3}\
+${color}
 
 ${font Liberation Mono:weight=bold:size=9}Highest Mem ${alignr} CPU%  Mem%${font}
-${voffset -9}
-${color4}${top_mem name 1}${alignr}${top_mem cpu 1}${top_mem mem 1}
-${top_mem name 2}$alignr${top_mem cpu 2}${top_mem mem 2}
-${top_mem name 3}$alignr${top_mem cpu 3}${top_mem mem 3}${color}
+${voffset -9}${color4}
+${top_mem name 1}${alignr}${top_mem cpu 1}${top_mem mem 1}
+${top_mem name 2}${alignr}${top_mem cpu 2}${top_mem mem 2}
+${top_mem name 3}${alignr}${top_mem cpu 3}${top_mem mem 3}\
+${color}
 
 
-${font Liberation Mono:weight=bold:size=9}${color5}FILESYSTEM ${hr 1}${color}${font}
+${template4 FILESYSTEM}
 
-${font Liberation Mono:weight=bold:size=9}/ ${font} ${color4}${alignr}${fs_used /} / ${fs_size /}${color}
+${template0 / ${fs_used\ /}\ /\ ${fs_size\ /}}
 #{fs_bar 4 /} #see conky-draw/conky_draw_config.lua
 
 
-${font Liberation Mono:weight=bold:size=9}R ${alignr 108}W${font}
-\
-${voffset -13}${alignr 120}${color4}${diskio_read /dev/sdc}${color}
-${voffset -13}${alignr}${color4}${diskio_write /dev/sdc}${color}
+${template2 R W}
+${voffset -14}${template3 ${diskio_read\ /dev/sdc} ${diskio_write\ /dev/sdc}}
 \
 ${voffset -5}${color1}${font Liberation Mono:size=7}\
 ${diskiograph_read /dev/sdc 25,107 005500 005500}${alignr}${diskiograph_write /dev/sdc 25,107 550000 550000}\
 ${font}${color}
 
-${font Liberation Mono:weight=bold:size=9}${color5}NETWORK ${hr 1}${color}${font}
+${template4 NETWORK}
 
-${font Liberation Mono:weight=bold:size=9}LAN IP:${font} ${alignr}${color4}${addr enp7s0}${color}
+${template0 LAN\ IP: ${addr\ enp7s0}}
 \
-${font Liberation Mono:weight=bold:size=9}Down ${alignr 95}Up${font}
-\
-${color4}${voffset -13}${alignr 120}${downspeed enp7s0}
-${voffset -13}${alignr}${upspeed enp7s0}${color}
+${template2 Down Up}
+${voffset -14}${template3 ${downspeed\ enp7s0} ${upspeed\ enp7s0}}
 \
 ${voffset -5}${color1}${font Liberation Mono:size=7}\
-${downspeedgraph enp7s0 25,107 005500 005500} ${alignr}${upspeedgraph enp7s0 25,107 550000 550000}\
+${downspeedgraph enp7s0 25,107 005500 005500}${alignr}${upspeedgraph enp7s0 25,107 550000 550000}\
 ${font}${color}
 \
-${font Liberation Mono:weight=bold:size=9}${voffset -5}Total ${alignr 73}Total${font}
-${voffset -13}${color4}${alignr 120}${totaldown enp7s0}
-${voffset -13}${alignr}${totalup enp7s0}${color}
+${voffset -5}${template2 Total Total}
+${voffset -14}${template3 ${totaldown\ enp7s0} ${totalup\ enp7s0}}
 
 ${font Liberation Mono:style=Italic:size=8}${alignr}Conky v${conky_version}${font}
 ]]
